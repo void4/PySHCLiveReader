@@ -97,15 +97,14 @@ PROCESS_WM_READ = 0x0010
 
 from time import sleep
 
+
+
 from ctypes import *
 from ctypes.wintypes import *
-
-#GetProcessesByName = windll.kernel32.GetProcessesByName
-OpenProcess = windll.kernel32.OpenProcess
-ReadProcessMemory = windll.kernel32.ReadProcessMemory
-CloseHandle = windll.kernel32.CloseHandle
+from pymem import Pymem
 
 import psutil
+import traceback
 
 def GetProcessesByName(name):
     return [process for process in psutil.process_iter() if process.name() == name]
@@ -116,12 +115,14 @@ class Reader:
         print("Searching for process...")
         while True:
             try:
+                """
                 process = GetProcessesByName("Stronghold_Crusader_Extreme.exe")[0]
                 #print(process)
                 processHandle = OpenProcess(PROCESS_WM_READ, False, process.pid)
-
-                self.UpdateGameData(processHandle, memorymap.playerdata)
-                self.UpdateGameData(processHandle, memorymap.leaderboard)
+                """
+                pm = Pymem("Stronghold_Crusader_Extreme.exe")
+                self.UpdateGameData(pm, memorymap.playerdata)
+                self.UpdateGameData(pm, memorymap.leaderboard)
 
                 print(str(memorymap.playerdata))
                 print(str(memorymap.leaderboard))
@@ -133,29 +134,17 @@ class Reader:
 
             except Exception as e:
                 print(e)
+                traceback.print_exc()
 
-    def readInt(self, processHandle, addr, size):
-        bytesRead = 0
-        num = ""
-        buffer = [0 for i in range(size)]
-        value = ReadProcessMemory(processHandle, addr, size)
-        print(value)
-        return value
-
-    def readString(self, processHandle, addr, size):
-        value = ReadProcessMemory(processHandle, addr, size)
-        print(value)
-        return value
-
-    def UpdateGameData(self, processHandle, gameData):
+    def UpdateGameData(self, pm, gameData):
         for name, data in gameData.items():
             for key, vdict in data.dataset.items():
                 addr = vdict["Address"]
                 size = vdict["Size"]
                 if key == "Name":
-                    value = self.readString(processHandle, addr, size)
+                    value = pm.readString(addr)
                 else:
-                    value = self.readInt(processHandle, addr, size)
+                    value = pm.read_int(addr)
 
                 vdict["value"] = value
 
