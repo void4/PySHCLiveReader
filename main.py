@@ -26,5 +26,5 @@ V1_UNKNOWN = """Name:32:s Gold:4 Units:4 Popularity:4 Population:2 Housing:2
 LeaderBoard = """Name:32:s, TotalGold:4 TroopsProduced:4 FoodProduced:4 StoneProduced:4 IronProduced:4 WoodProduced:4 BuildingsLost:4 BuildingsDestroyed:4 HighestPopulation:4 Housing:2"""
 
 if __name__ == "__main__":
-    reader = MemoryReader({"PlayerTable":V1_2_1_E})
+    reader = MemoryReader("Stronghold_Crusader_Extreme.exe", {"PlayerTable":V1_2_1_E})
     reader.run()

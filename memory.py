@@ -26,7 +26,8 @@ def GetProcessesByName(name):
 
 class MemoryReader:
 
-    def __init__(self, tables):
+    def __init__(self, exename, tables):
+        self.exename = exename
         self.tables = tables
         for name, table in self.tables.items():
             self.tables[name] = self.loadTable(table)
@@ -63,7 +64,7 @@ class MemoryReader:
 
     def run(self):
         print("Searching for process...")
-        self.pm = Pymem("Stronghold_Crusader_Extreme.exe")
+        self.pm = Pymem(self.exename)
         #print(dir(pm))
         print("Attached.")
         while True:
