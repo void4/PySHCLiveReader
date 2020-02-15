@@ -25,6 +25,44 @@ V1_UNKNOWN = """Name:32:s Gold:4 Units:4 Popularity:4 Population:2 Housing:2
 
 LeaderBoard = """Name:32:s, TotalGold:4 TroopsProduced:4 FoodProduced:4 StoneProduced:4 IronProduced:4 WoodProduced:4 BuildingsLost:4 BuildingsDestroyed:4 HighestPopulation:4 Housing:2"""
 
-if __name__ == "__main__":
-    reader = MemoryReader("Stronghold_Crusader_Extreme.exe", {"PlayerTable":V1_2_1_E})
-    reader.run()
+reader = MemoryReader("Stronghold_Crusader_Extreme.exe", {"PlayerTable":V1_2_1_E})
+
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib import style
+import numpy as np
+
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+xs = []
+ys = [[] for i in range(8)]
+
+def animate(i):
+
+	tables = reader.runOnce()
+
+	# Limit x and y lists to 20 items
+	#xs = xs[-20:]
+	#ys = ys[-20:]
+
+	# Add x and y to lists
+	xs.append(i)
+	ax.clear()
+	for playerindex in range(8):
+		player = tables["PlayerTable"][playerindex]
+		gold = [m for m in player if m.name=="Gold"][0]
+		ys[playerindex].append(gold.value)
+		ax.plot(xs, ys[playerindex], label=str(playerindex))
+
+	# Format plot
+	plt.xticks(rotation=45, ha='right')
+	plt.subplots_adjust(bottom=0.30)
+	plt.title("Game stats")
+	plt.ylabel('Gold')
+	plt.legend()
+	#plt.axis([1, None, 0, 1.1]) #Use for arbitrary number of trials
+	#plt.axis([1, 100, 0, 1.1]) #Use for 100 trial demo
+
+# Set up plot to call animate() function periodically
+ani = animation.FuncAnimation(fig, animate, interval=50)
+plt.show()
