@@ -16,11 +16,7 @@ PROCESS_WM_READ = 0x0010
 from time import sleep
 from pymem import Pymem
 
-import psutil
 import traceback
-
-def GetProcessesByName(name):
-    return [process for process in psutil.process_iter() if process.name() == name]
 
 class MemoryReader:
 
