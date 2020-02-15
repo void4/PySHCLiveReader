@@ -7,7 +7,12 @@ from matplotlib import style
 def liveplot(reader, vizax):
 	fig = plt.figure()
 
-	axes = [[fig.add_subplot(1,3,ax+1), [], [[] for i in range(8)]] for ax in range(len(vizax))]
+	fig_size = plt.gcf().get_size_inches() #Get current size
+	sizefactor = 1.8 #Set a zoom factor
+	# Modify the current size by the factor
+	plt.gcf().set_size_inches(sizefactor * fig_size)
+
+	axes = [[fig.add_subplot(3,1,ax+1), [], [[] for i in range(8)]] for ax in range(len(vizax))]
 
 	def animate(i):
 
@@ -30,13 +35,14 @@ def liveplot(reader, vizax):
 				ax[0].plot(ax[1], ax[2][playerindex], label=f"Player{playerindex} - {meta.value}")
 
 			#print(ax[0], dir(ax[0]))
-			#ax[0].ylabel(AXES[axi])
-			ax[0].legend()
+			ax[0].set_ylabel(vizax[axi])
+			ax[0].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
 		# Format plot
 		#plt.xticks(rotation=45, ha='right')
 		#plt.subplots_adjust(bottom=0.30)
-		plt.title("Game stats")
+		#plt.title("Game stats")
+		plt.subplots_adjust(right=0.7)
 		#plt.axis([1, None, 0, 1.1]) #Use for arbitrary number of trials
 		#plt.axis([1, 100, 0, 1.1]) #Use for 100 trial demo
 
