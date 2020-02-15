@@ -46,9 +46,9 @@ import numpy as np
 def liveplot():
 	fig = plt.figure()
 
-	ax = fig.add_subplot(1, 1, 1)
-	xs = []
-	ys = [[] for i in range(8)]
+	AXES = "Gold Units Popularity".split()
+
+	axes = [[fig.add_subplot(1,3,ax+1), [], [[] for i in range(8)]] for ax in range(len(AXES))]
 
 	def animate(i):
 
@@ -59,25 +59,29 @@ def liveplot():
 		#ys = ys[-20:]
 
 		# Add x and y to lists
-		xs.append(i)
-		ax.clear()
-		for playerindex in range(8):
-			player = tables["PlayerTable"][playerindex]
-			gold = [m for m in player if m.name=="Gold"][0]
-			ys[playerindex].append(gold.value)
-			ax.plot(xs, ys[playerindex], label=f"Player{playerindex} - {gold.value}")
+		for axi, ax in enumerate(axes):
+			ax[1].append(i)
+			ax[0].clear()
+
+			for playerindex in range(8):
+				player = tables["PlayerTable"][playerindex]
+				meta = [m for m in player if m.name==AXES[axi]][0]
+				ax[2][playerindex].append(meta.value)
+				ax[0].plot(ax[1], ax[2][playerindex], label=f"Player{playerindex} - {meta.value}")
+
+			#print(ax[0], dir(ax[0]))
+			#ax[0].ylabel(AXES[axi])
+			ax[0].legend()
 
 		# Format plot
-		plt.xticks(rotation=45, ha='right')
-		plt.subplots_adjust(bottom=0.30)
+		#plt.xticks(rotation=45, ha='right')
+		#plt.subplots_adjust(bottom=0.30)
 		plt.title("Game stats")
-		plt.ylabel('Gold')
-		plt.legend()
 		#plt.axis([1, None, 0, 1.1]) #Use for arbitrary number of trials
 		#plt.axis([1, 100, 0, 1.1]) #Use for 100 trial demo
 
 	# Set up plot to call animate() function periodically
-	ani = animation.FuncAnimation(fig, animate, interval=50)
+	ani = animation.FuncAnimation(fig, animate, interval=100)
 	plt.show()
 
 from time import sleep
