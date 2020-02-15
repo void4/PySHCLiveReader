@@ -2,6 +2,7 @@ from memory import MemoryReader
 from visualize import liveplot
 from maps import *
 
+#"Stronghold_Crusader_Extreme.exe"
 reader = MemoryReader("Crusader.exe", {"PlayerTable":V1_2})
 
 """
