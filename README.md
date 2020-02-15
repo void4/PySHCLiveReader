@@ -1,4 +1,9 @@
 # PySHCLiveReader
+
+Provides and optionally graphs live game statistics, ideal for tournaments!
+
+![Live statistics](livestats.png)
+
 ## Installation
 `pip install -r requirements.txt`
 
