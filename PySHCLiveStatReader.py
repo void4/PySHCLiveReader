@@ -100,11 +100,6 @@ class MemoryMap:
 PROCESS_WM_READ = 0x0010
 
 from time import sleep
-
-
-
-from ctypes import *
-from ctypes.wintypes import *
 from pymem import Pymem
 
 import psutil
@@ -122,12 +117,6 @@ class Reader:
         print("Attached.")
         while True:
             try:
-                """
-                process = GetProcessesByName("Stronghold_Crusader_Extreme.exe")[0]
-                #print(process)
-                processHandle = OpenProcess(PROCESS_WM_READ, False, process.pid)
-                """
-
                 self.UpdateGameData(pm, memorymap.playerdata)
                 self.UpdateGameData(pm, memorymap.leaderboard)
 
