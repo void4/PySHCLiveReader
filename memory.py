@@ -32,6 +32,8 @@ class MemoryReader:
         for name, table in self.tables.items():
             self.tables[name] = self.loadTable(table)
 
+        self.attach()
+
     def loadTable(self, table):
         config = table.splitlines()
 
@@ -62,17 +64,19 @@ class MemoryReader:
 
         return data
 
-    def run(self):
+    def attach(self):
         print("Searching for process...")
         self.pm = Pymem(self.exename)
         #print(dir(pm))
         print("Attached.")
+
+    def run(self):
+
         while True:
             try:
                 self.update()
 
                 print(self.tables)
-                #print(memorymap.LeaderboardString())
 
                 sleep(1)
             except IndexError as e:
@@ -82,6 +86,10 @@ class MemoryReader:
             except Exception as e:
                 print(e)
                 traceback.print_exc()
+
+    def runOnce(self):
+        self.update()
+        return self.tables
 
     def update(self):
         for name, table in self.tables.items():
