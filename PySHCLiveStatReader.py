@@ -1,20 +1,22 @@
+import json
+
 class Data:
     def __init__(self, title, items):
         self.title = title
         self.dataset = items
 
-    def __str__(self):
+    def __repr__(self):
         if self.dataset["Name"]["Value"] == "":
             return ""
 
-        s = '"{self.title}":\n'
+        s = f'"{self.title}":\n'
         s += "{\n"
         for key, value in self.dataset.items():
             rawData = value["Value"]
-            s += f"{key}: {str(rawData)},\n"
+            s += f"\t{key}: {str(rawData)},\n"
 
-        s = s[:-1]
-        s += "}"
+        s = s[:-2]
+        s += "\n}"
         return s
 
 def CreateValueDictionary(addr, size):
@@ -72,26 +74,28 @@ class MemoryMap:
             "Player8": Data("Player8", CreateLeaderBoardDictionary(0x024BA4FC, 0x024BA580, 0x024BA8A4, 0x024BA74C, 0x024BA794, 0x024BA770, 0x024BA7B8, 0x024BA838, 0x024BA728, 0x024BA594, 0x120BA4C))
         }
 
-    def LeaderboardString():
+    def PlayerDataString(self):
+        s = ""
+        for player, data in self.playerdata.items():
+            sdata = str(data)
+            if sdata == "":
+                continue
+            s += sdata + ",\n"
+
+        s = s[:-2]
+        s += "\n}"
+        return s
+
+    def LeaderboardString(self):
         active = False
-        for key, value in leaderboard.items():
-            if value.gamedata["Housing"]["Value"] != 0:
+        for key, value in self.leaderboard.items():
+            if value.dataset["Housing"]["Value"] != 0:
                 active = True
 
         if not active:
             return {}
 
-        s = "{\n"
-        for key, value in leaderboard.items():
-            dataString = str(value)
-            if dataString == "":
-                continue
-
-            s += dataString + ",\n"
-
-        s = s[:-1]
-        s += "}"
-        return s
+        return json.dumps(leaderboard, indent=4)
 
 PROCESS_WM_READ = 0x0010
 
@@ -113,6 +117,9 @@ class Reader:
     def run(self):
         memorymap = MemoryMap()
         print("Searching for process...")
+        pm = Pymem("Stronghold_Crusader_Extreme.exe")
+        #print(dir(pm))
+        print("Attached.")
         while True:
             try:
                 """
@@ -120,12 +127,12 @@ class Reader:
                 #print(process)
                 processHandle = OpenProcess(PROCESS_WM_READ, False, process.pid)
                 """
-                pm = Pymem("Stronghold_Crusader_Extreme.exe")
+
                 self.UpdateGameData(pm, memorymap.playerdata)
                 self.UpdateGameData(pm, memorymap.leaderboard)
 
-                print(str(memorymap.playerdata))
-                print(str(memorymap.leaderboard))
+                print(memorymap.PlayerDataString())
+                print(memorymap.LeaderboardString())
 
                 sleep(1)
             except IndexError as e:
@@ -142,7 +149,7 @@ class Reader:
                 addr = vdict["Address"]
                 size = vdict["Size"]
                 if key == "Name":
-                    value = pm.readString(addr)
+                    value = pm.read_string(addr)
                 else:
                     value = pm.read_int(addr)
 
