@@ -3,10 +3,10 @@
 from memory import MemoryReader
 from tables import *
 
-#"Stronghold_Crusader_Extreme.exe"
 reader = MemoryReader("Crusader.exe", {"PlayerTable": V1_2})
 
 while True:
 	tables = reader.runOnce()
+    # tables now contains the most recent values of all tracked addresses
 	print(tables)
 	sleep(1)

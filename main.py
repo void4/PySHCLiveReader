@@ -2,7 +2,6 @@ from memory import MemoryReader
 from visualize import liveplot
 from tables import *
 
-#"Stronghold_Crusader_Extreme.exe"
 reader = MemoryReader("Crusader.exe", {"PlayerTable": V1_2})
 
 if __name__ == "__main__":
