@@ -2,7 +2,7 @@
 
 Provides and optionally graphs live game statistics, ideal for tournaments!
 
-![Live statistics](livestats.png)
+![Live statistics](livestats.PNG)
 
 ## Installation
 `pip install -r requirements.txt`
