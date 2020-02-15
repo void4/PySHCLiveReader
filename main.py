@@ -3,13 +3,9 @@ from visualize import liveplot
 from maps import *
 
 #"Stronghold_Crusader_Extreme.exe"
-reader = MemoryReader("Crusader.exe", {"PlayerTable":V1_2})
+reader = MemoryReader("Crusader.exe", {"PlayerTable": V1_2})
 
-"""
-while True:
-	tables = reader.runOnce()
-	print(tables)
-	sleep(1)
-"""
 if __name__ == "__main__":
+	# First argument is the MemoryReader
+	# Second argument is a list of columns that will be plotted
 	liveplot(reader, "Gold Units Popularity".split())
