@@ -39,3 +39,7 @@ See [`example.py`](example.py)
 If you are using a different Stronghold version or want to extend support for new fields, use [CheatEngine](https://cheatengine.org/) or the here included `search.py` to search for the memory addresses, then update the corresponding table in `tables.py`.
 
 The header row indicates the name of all cells in its column, their size in bytes and their type (i=integer, s=string). There is one line for each player.
+
+## Closing notes
+
+This library is written very generally, it can be easily reused for other programs and games. The address table format makes it especially suited for those with several players.
