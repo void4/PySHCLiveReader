@@ -12,4 +12,4 @@ while True:
 	sleep(1)
 """
 if __name__ == "__main__":
-	liveplot(reader)
+	liveplot(reader, "Gold Units Popularity".split())

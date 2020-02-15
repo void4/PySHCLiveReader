@@ -4,12 +4,10 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
 
-def liveplot(reader):
+def liveplot(reader, vizax):
 	fig = plt.figure()
 
-	AXES = "Gold Units Popularity".split()
-
-	axes = [[fig.add_subplot(1,3,ax+1), [], [[] for i in range(8)]] for ax in range(len(AXES))]
+	axes = [[fig.add_subplot(1,3,ax+1), [], [[] for i in range(8)]] for ax in range(len(vizax))]
 
 	def animate(i):
 
@@ -27,7 +25,7 @@ def liveplot(reader):
 
 			for playerindex in range(8):
 				player = tables["PlayerTable"][playerindex]
-				meta = [m for m in player if m.name==AXES[axi]][0]
+				meta = [m for m in player if m.name==vizax[axi]][0]
 				ax[2][playerindex].append(meta.value)
 				ax[0].plot(ax[1], ax[2][playerindex], label=f"Player{playerindex} - {meta.value}")
 
