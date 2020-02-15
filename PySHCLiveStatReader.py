@@ -17,14 +17,14 @@ class Data:
         s += "}"
         return s
 
-def CreateValueDictionary(self, addr, size):
+def CreateValueDictionary(addr, size):
     return {
         "Address": addr,
         "Value": 0,
         "Size": size
     }
 
-def CreatePlayerDataDictionary(self, name, gold, units, popularity, population, housing):
+def CreatePlayerDataDictionary(name, gold, units, popularity, population, housing):
     return {
         "Name": CreateValueDictionary(name, 32),
         "Gold": CreateValueDictionary(gold, 4),
@@ -34,7 +34,7 @@ def CreatePlayerDataDictionary(self, name, gold, units, popularity, population, 
         "Housing": CreateValueDictionary(housing, 2)
     }
 
-def CreateLeaderBoardDictionary(self, name, gold, units, food, stone, iron, wood, buildings, razed, population, active):
+def CreateLeaderBoardDictionary(name, gold, units, food, stone, iron, wood, buildings, razed, population, active):
     return {
         "Name": CreateValueDictionary(name, 32),
         "Total Gold": CreateValueDictionary(gold, 4),
@@ -100,26 +100,37 @@ from time import sleep
 from ctypes import *
 from ctypes.wintypes import *
 
-GetProcessesByName = windll.kernel32.GetProcessesByName
+#GetProcessesByName = windll.kernel32.GetProcessesByName
 OpenProcess = windll.kernel32.OpenProcess
 ReadProcessMemory = windll.kernel32.ReadProcessMemory
 CloseHandle = windll.kernel32.CloseHandle
 
+import psutil
+
+def GetProcessesByName(name):
+    return [process for process in psutil.process_iter() if process.name() == name]
 
 class Reader:
     def run(self):
+        memorymap = MemoryMap()
+        print("Searching for process...")
         while True:
             try:
-                process = GetProcessesByName("Stronghold_Crusader_Extreme")[0]
-                processHandle = OpenProcess(PROCESS_WM_READ, False, process.Id)
+                process = GetProcessesByName("Stronghold_Crusader_Extreme.exe")[0]
+                #print(process)
+                processHandle = OpenProcess(PROCESS_WM_READ, False, process.pid)
 
-                self.UpdateGameData(processHandle, MemoryMap.playerdata)
-                self.UpdateGameData(processHandle, MemoryMap.leaderboard)
+                self.UpdateGameData(processHandle, memorymap.playerdata)
+                self.UpdateGameData(processHandle, memorymap.leaderboard)
 
-                print(str(MemoryMap.playerdata))
-                print(str(MemoryMap.leaderboard))
+                print(str(memorymap.playerdata))
+                print(str(memorymap.leaderboard))
 
                 sleep(1)
+            except IndexError as e:
+                print(e)
+                sleep(0.1)
+
             except Exception as e:
                 print(e)
 
@@ -147,3 +158,7 @@ class Reader:
                     value = self.readInt(processHandle, addr, size)
 
                 vdict["value"] = value
+
+if __name__ == "__main__":
+    reader = Reader()
+    reader.run()
