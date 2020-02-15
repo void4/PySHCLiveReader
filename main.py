@@ -1,6 +1,6 @@
 from memory import MemoryReader
 from visualize import liveplot
-from maps import *
+from tables import *
 
 #"Stronghold_Crusader_Extreme.exe"
 reader = MemoryReader("Crusader.exe", {"PlayerTable": V1_2})

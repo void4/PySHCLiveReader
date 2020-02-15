@@ -1,7 +1,5 @@
 import json
 
-
-
 class Meta:
     def __init__(self, name, addr, size=4, typ="i"):
         self.name = name
