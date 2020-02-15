@@ -1,3 +1,4 @@
 psutil
 pywin32
 pymem
+matplotlib
