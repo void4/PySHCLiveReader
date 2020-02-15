@@ -28,7 +28,15 @@ def converge(target):
             pass
 
 if len(argv) > 1:
-    target = int(argv[1])
+    arg1 = argv[1]
+    if arg1 == "read":
+        addr = int(argv[2], 16)
+        print(pm.read_int(addr))
+        exit(0)
+    try:
+        target = int(arg1)
+    except ValueError:
+        exit(1)
     converge(target)
 
 while True:
