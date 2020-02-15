@@ -1,5 +1,16 @@
 from memory import MemoryReader
 
+#only first value reliable ere
+V1_2 = """Gold:4 Units:4 Popularity:4
+0x116bcd0 0x116bb7c 0x116bc08
+0x116f6c4 0x116f570 0x116f5fc
+0x11730b8 0x1172f64 0x1172ff0
+0x1176aac 0x1176958 0x11769e4
+0x117a4a0 0x117a34c 0x117a3d8
+0x117de94 0x117dd40 0x117ddcc
+0x1181888 0x1181734 0x11817c0
+0x118527c 0x1185128 0x11851b4"""
+
 #V1.2.1-E
 V1_2_1_E = """Name:32:s Gold:4 Units:4 Popularity:4 Population:2 Housing:2
 - 0x122c760
@@ -25,7 +36,7 @@ V1_41E_UCP2_13 = """Name:32:s Gold:4 Units:4 Popularity:4 Population:2 Housing:2
 
 LeaderBoard = """Name:32:s, TotalGold:4 TroopsProduced:4 FoodProduced:4 StoneProduced:4 IronProduced:4 WoodProduced:4 BuildingsLost:4 BuildingsDestroyed:4 HighestPopulation:4 Housing:2"""
 
-reader = MemoryReader("Stronghold_Crusader_Extreme.exe", {"PlayerTable":V1_2_1_E})
+reader = MemoryReader("Crusader.exe", {"PlayerTable":V1_2})
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -34,6 +45,7 @@ import numpy as np
 
 def liveplot():
 	fig = plt.figure()
+
 	ax = fig.add_subplot(1, 1, 1)
 	xs = []
 	ys = [[] for i in range(8)]

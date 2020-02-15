@@ -2,21 +2,27 @@ from sys import argv
 from pymem import Pymem
 from copy import deepcopy
 
-pm = Pymem("Stronghold_Crusader_Extreme.exe")
+pm = Pymem("Crusader.exe")#"Stronghold_Crusader_Extreme.exe")
 
 start = 0x011F2938
-step = 4
+step = 2
 
 history = []
 
 def converge(target):
     #print(history)
+    if isinstance(target, int):
+        searchfuncs = [pm.read_int, pm.read_short]
+    elif isinstance(target, str):
+        searchfuncs = [pm.read_string]
+    else:
+        raise TypeError("Unsupported target type", type(target), target)
     history.append({})
-    for i in range(25000000):
+    for i in range(5000000):
         try:
             address = start + i*step
             if len(history) == 1 or address in history[-2]:
-                values = [pm.read_int(address), pm.read_short(address), pm.read_string(address)]
+                values = [f(address) for f in searchfuncs]
                 if target in values:
                     #print("FOUND")
                     print(hex(address), values)
@@ -28,7 +34,11 @@ if len(argv) > 1:
     arg1 = argv[1]
     if arg1 == "read":
         addr = eval(argv[2])#int(argv[2], 16)
-        print(hex(addr), pm.read_int(addr), pm.read_short(addr), pm.read_string(addr))
+        try:
+            s = pm.read_string(addr)
+        except UnicodeDecodeError:
+            s = "???"
+        print(hex(addr), pm.read_int(addr), pm.read_short(addr), s)
         exit(0)
     try:
         target = eval(arg1)
