@@ -1,0 +1,30 @@
+from memory import MemoryReader
+
+#V1.2.1-E
+V1_2_1_E = """Name:32:s Gold:4 Units:4 Popularity:4 Population:2 Housing:2
+- 0x122c760
+- 0x1230154
+- 0x1233b48
+- 0x123753c
+- 0x123af30
+- 0x123e924
+- 0x1242318
+- 0x1245d0c"""
+
+V1_UNKNOWN = """Name:32:s Gold:4 Units:4 Popularity:4 Population:2 Housing:2
+0x024BA286 0x011F2938 0x011F27E4 0x011F2870 0x011F45AC 0x011F24A0
+0x024BA2E0 0x011F632C 0x011F61D8 0x011F6264 0x011F7FA0 0x011F5E94
+0x024BA33A 0x011F9D20 0x011F9BCC 0x011F9C58 0x011FB994 0x011F9888
+0x024BA394 0x011FD714 0x011FD5C0 0x011FD64C 0x011FF388 0x011FD27C
+0x024BA3EE 0x01201108 0x01200fb4 0x01201040 0x01202D7C 0x01200C70
+0x024BA448 0x01204AFC 0x012049A8 0x01204A34 0x01206770 0x01204664
+0x024BA4A2 0x012084F0 0x0120839C 0x01208428 0x0120A164 0x01208058
+0x024BA4FC 0x0120BEE4 0x0120BD90 0x0120BE1C 0x0120DB58 0x120BA4C
+"""
+
+
+LeaderBoard = """Name:32:s, TotalGold:4 TroopsProduced:4 FoodProduced:4 StoneProduced:4 IronProduced:4 WoodProduced:4 BuildingsLost:4 BuildingsDestroyed:4 HighestPopulation:4 Housing:2"""
+
+if __name__ == "__main__":
+    reader = MemoryReader({"PlayerTable":V1_2_1_E})
+    reader.run()
