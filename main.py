@@ -20,14 +20,15 @@ def liveplot():
 
 		tables = reader.runOnce()
 
-		# Limit x and y lists to 20 items
-		#xs = xs[-20:]
-		#ys = ys[-20:]
-
-		# Add x and y to lists
 		for axi, ax in enumerate(axes):
-			ax[1].append(i)
+
+			# Limit x and y lists to 20 items
+			#ax[1] = ax[1][-20:]
+			#ax[2] = [a[-20:] for a in ax[2]]
+
 			ax[0].clear()
+
+			ax[1].append(i)
 
 			for playerindex in range(8):
 				player = tables["PlayerTable"][playerindex]
